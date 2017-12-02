@@ -1,4 +1,5 @@
 const Mocha = require('mocha');
+const serializeError = require('serialize-error');
 
 console.log('i am alive');
 
@@ -66,7 +67,7 @@ function onSuiteDone(filename, title, duration, exitCode, stats) {
 function onUncaughtException(err) {
     process.send({
         type: 'uncaughtException',
-        error: err
+        error: serializeError(err)
     });
 }
 

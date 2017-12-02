@@ -3,7 +3,7 @@ const path = require('path');
 
 runner2()
     .config({
-        debug: false,
+        debug: true,
         pattern: 'test/**/*.gg.js',
         shuffleFiles: false,
         slowTestPatterns: ['slowTest.gg.js'],
