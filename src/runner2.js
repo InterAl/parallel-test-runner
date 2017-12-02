@@ -4,8 +4,6 @@ const glob = require('glob');
 const path = require('path');
 const red = '\x1b[31m', green = '\x1b[32m', cyan = '\x1b[36m', reset = '\x1b[0m';
 
-const debugJobs = false;
-
 module.exports = function createRunner() {
     let config;
 
@@ -30,6 +28,7 @@ function run(cfg) {
 }
 
 function runFiles({
+    debug,
     pattern,
     files,
     shuffleFiles,
@@ -72,7 +71,7 @@ function runFiles({
 
     const processes = normalProcesses.concat(slowProcesses);
 
-    debugJobs && processes.forEach(logProcess);
+    debug && processes.forEach(logProcess);
 
     processes.forEach((p, idx) => p.on('message', handleChildMessage.bind(null, idx, p)));
 

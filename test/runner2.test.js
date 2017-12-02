@@ -3,13 +3,10 @@ const path = require('path');
 
 runner2()
     .config({
+        debug: false,
         pattern: 'test/**/*.gg.js',
         shuffleFiles: false,
         slowTestPatterns: ['slowTest.gg.js'],
-        processName: path.resolve(__dirname, '../node_modules/mocha/bin/mocha'),
-        runnerArgs: files => [
-            '-R', 'json-stream'
-        ],
         requireFiles: [path.resolve(__dirname, './lala.js')]
     })
     .run()
