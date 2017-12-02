@@ -1,7 +1,7 @@
-const runner = require('../src/runner2');
+const {runner2} = require('../src/index.js');
 const path = require('path');
 
-runner()
+runner2()
     .config({
         pattern: 'test/**/*.gg.js',
         shuffleFiles: false,

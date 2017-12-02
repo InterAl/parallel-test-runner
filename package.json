@@ -2,7 +2,7 @@
   "name": "parallel-test-runner",
   "version": "1.2.0",
   "description": "",
-  "main": "src/runner.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha \"test/**/*.test.js\""
   },
