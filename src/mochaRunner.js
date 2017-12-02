@@ -18,28 +18,33 @@ function handleMessage(m) {
 }
 
 function runFile({filename}) {
-    const mocha = new Mocha();
+    try {
+        const mocha = new Mocha();
 
-    mocha.addFile(
-        filename
-    );
+        mocha.addFile(
+            filename
+        );
 
-    console.log('running mocha on', filename);
+        console.log('running mocha on', filename);
 
-    const startTime = new Date();
+        const startTime = new Date();
 
-    const runner = mocha.run(exitCode => {
-        const duration = new Date() - startTime;
-        onSuiteDone(filename, filename, duration, exitCode, runner.stats);
-    });
+        const runner = mocha.run(exitCode => {
+            const duration = new Date() - startTime;
+            const stats = typeof runner === 'undefined' ? {} : runner.stats;
+            onSuiteDone(filename, filename, duration, exitCode, stats);
+        });
 
-    runner.on('fail', (test, err) => {
-        onTestDone(filename, test.title, false, err);
-    });
+        runner.on('fail', (test, err) => {
+            onTestDone(filename, test.title, false, err);
+        });
 
-    runner.on('pass', test => {
-        onTestDone(filename, test.title, true);
-    });
+        runner.on('pass', test => {
+            onTestDone(filename, test.title, true);
+        });
+    } catch (err) {
+        onSuiteDone(filename, filename, null, 1, {});
+    }
 }
 
 function onTestDone(filename, title, pass, error) {

@@ -71,6 +71,8 @@ function runFiles({
 
     const processes = normalProcesses.concat(slowProcesses);
 
+    console.log('spawned %s jobs', processes.length);
+
     debug && processes.forEach(logProcess);
 
     processes.forEach((p, idx) => p.on('message', handleChildMessage.bind(null, idx, p)));
@@ -105,6 +107,11 @@ function runFiles({
         workingSet[msg.filename].result = result;
 
         const nextFile = getNextFile(workingSet, process.isSlow);
+
+        const inProgress = _.filter(workingSet, f => f.taken && !f.result).length;
+        const completed = _.filter(workingSet, f => f.taken && f.result).length;
+        const remaining = _.filter(workingSet, f => !f.taken).length;
+        console.log(`${cyan}suites in progress: %s, completed: %s, remaining: %s`, inProgress, completed, remaining, reset);
 
         if (nextFile)
             sendFileToJob(workingSet, process, nextFile);
