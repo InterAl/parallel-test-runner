@@ -1,4 +1,7 @@
-describe('pass', () => {
-    it('description', () => {
+describe('foo bar', () => {
+    it('pass', () => {
+    });
+    it('pass2', () => {
+        
     });
 });
