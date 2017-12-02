@@ -37,6 +37,7 @@ function runFiles({
     runnerArgs,
     parallelFactor = 4,
     runner = 'mocha',
+    requireFiles,
     resolve,
     reject
 }) {
@@ -60,11 +61,11 @@ function runFiles({
     const slowFiles = _.filter(_.keys(workingSet), f => workingSet[f].isSlow);
 
     const normalProcesses = _.range(parallelFactor).map(idx => {
-        return spawnJob(runner);
+        return spawnJob(runner, requireFiles);
     });
 
     const slowProcesses = _.map(slowFiles, f => {
-        const p = spawnJob(runner);
+        const p = spawnJob(runner, requireFiles);
         p.slowProcessor = true;
         return p;
     });
@@ -83,7 +84,14 @@ function runFiles({
             case 'testDone':
                 handleTestDone(msg);
                 break;
+            case 'uncaughtException':
+                handleUncaughtException(msg);
+                break;
         }
+    }
+
+    function handleUncaughtException(msg) {
+        console.error('job uncaught:', msg.error);
     }
 
     function handleSuiteDone(jobIdx, process, msg) {
@@ -141,11 +149,13 @@ function getNextFile(files, slow) {
     });
 }
 
-function spawnJob(runner) {
+function spawnJob(runner, requireFiles = []) {
+    const args = _(requireFiles).map(f => ['--require', f]).flatten().value();
+
     switch (runner) {
         default:
         case 'mocha':
-            return fork(__dirname + '/mochaRunner.js', {
+            return fork(__dirname + '/mochaRunner.js', args, {
                 stdio: [null, null, null, 'ipc']
             });
             break;

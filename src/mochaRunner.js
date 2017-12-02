@@ -62,3 +62,12 @@ function onSuiteDone(filename, title, duration, exitCode, stats) {
         stats
     });
 }
+
+function onUncaughtException(err) {
+    process.send({
+        type: 'uncaughtException',
+        error: err
+    });
+}
+
+process.on('uncaughtException', onUncaughtException);
