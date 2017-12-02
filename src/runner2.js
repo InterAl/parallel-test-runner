@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const fork = require('child_process').fork;
+const spawn = require('child_process').spawn;
 const glob = require('glob');
 const path = require('path');
 const red = '\x1b[31m', green = '\x1b[32m', cyan = '\x1b[36m', reset = '\x1b[0m';
@@ -154,7 +154,7 @@ function spawnJob(runner, requireFiles = []) {
     switch (runner) {
         default:
         case 'mocha':
-            return fork(__dirname + '/mochaRunner.js', args, {
+            return spawn('node', [...args, __dirname + '/mochaRunner.js'], {
                 stdio: [null, null, null, 'ipc']
             });
             break;
