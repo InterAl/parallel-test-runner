@@ -6,15 +6,7 @@ console.log('i am alive');
 
 parentProcessApi.onReady();
 
-process.on('message', handleMessage);
-
-function handleMessage(m) {
-    switch (m.type) {
-        case 'runFile':
-            runFile(m);
-            break;
-    }
-}
+parentProcessApi.listenTo('runFile', runFile);
 
 function runFile({filename}) {
     try {

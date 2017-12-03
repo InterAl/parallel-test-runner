@@ -1,3 +1,16 @@
+const listeners = [];
+
+process.on('message', m => {
+    listeners.forEach(l => {
+        if (l.type === m.type)
+            l.handler(m);
+    });
+});
+
+exports.listenTo = function(type, handler) {
+    listeners.push({type, handler});
+};
+
 exports.onReady = function() {
     process.send({
         type: 'ready'

@@ -25,12 +25,20 @@ describe('runner2', () => {
         });
     });
 
-    function run() {
+    it('report all passes', () => {
+        return run('test/**/pass.gg.js').then(() => {
+            sinon.assert.calledWith(logSpy, green, 'All green');
+            sinon.assert.calledWith(logSpy, green, 'passes:', 2);
+            sinon.assert.calledWith(logSpy, cyan, 'pending:', 1);
+        });
+    });
+
+    function run(pattern = 'test/**/*.gg.js') {
         setup();
 
         return createRunner()
             .config({
-                pattern: 'test/**/*.gg.js',
+                pattern,
                 shuffleFiles: false,
                 slowTestPatterns: ['slowTest.gg.js'],
                 processName: path.resolve(__dirname, '../node_modules/mocha/bin/mocha'),
