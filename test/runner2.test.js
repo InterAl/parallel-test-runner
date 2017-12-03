@@ -33,7 +33,8 @@ describe('runner2', () => {
                 pattern: 'test/**/*.gg.js',
                 shuffleFiles: false,
                 slowTestPatterns: ['slowTest.gg.js'],
-                processName: path.resolve(__dirname, '../node_modules/mocha/bin/mocha')
+                processName: path.resolve(__dirname, '../node_modules/mocha/bin/mocha'),
+                debug: true
             })
             .run();
     }

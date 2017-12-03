@@ -1,11 +1,10 @@
 const Mocha = require('mocha');
 const serializeError = require('serialize-error');
+const parentProcessApi = require('./parentProcessApi');
 
 console.log('i am alive');
 
-process.send({
-    type: 'ready'
-});
+parentProcessApi.onReady();
 
 process.on('message', handleMessage);
 
@@ -32,48 +31,19 @@ function runFile({filename}) {
         const runner = mocha.run(exitCode => {
             const duration = new Date() - startTime;
             const stats = typeof runner === 'undefined' ? {} : runner.stats;
-            onSuiteDone(filename, filename, duration, exitCode, stats);
+            parentProcessApi.onSuiteDone(filename, filename, duration, exitCode, stats);
         });
 
         runner.on('fail', (test, err) => {
-            onTestDone(filename, test.title, false, err);
+            parentProcessApi.onTestDone(filename, test.title, false, err);
         });
 
         runner.on('pass', test => {
-            onTestDone(filename, test.title, true);
+            parentProcessApi.onTestDone(filename, test.title, true);
         });
     } catch (err) {
-        onSuiteDone(filename, filename, null, 1, {});
+        parentProcessApi.onSuiteDone(filename, filename, null, 1, {});
     }
 }
 
-function onTestDone(filename, title, pass, error) {
-    process.send({
-        type: 'testDone',
-        filename,
-        title,
-        passed: pass,
-        failed: !pass,
-        error
-    });
-}
-
-function onSuiteDone(filename, title, duration, exitCode, stats) {
-    process.send({
-        type: 'suiteDone',
-        filename,
-        title,
-        duration,
-        passed: exitCode === 0,
-        stats
-    });
-}
-
-function onUncaughtException(err) {
-    process.send({
-        type: 'uncaughtException',
-        error: serializeError(err)
-    });
-}
-
-process.on('uncaughtException', onUncaughtException);
+process.on('uncaughtException', parentProcessApi.onUncaughtException);
