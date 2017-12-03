@@ -4,9 +4,9 @@ const parentProcessApi = require('./parentProcessApi');
 
 console.log('i am alive');
 
-parentProcessApi.onReady();
-
 parentProcessApi.listenTo('runFile', runFile);
+
+parentProcessApi.onReady();
 
 function runFile({filename}) {
     try {

@@ -182,8 +182,6 @@ function waitUntilJobsReady(processes) {
 }
 
 function sendFileToJob(workingSet, process, filename) {
-    console.log('sending file', filename);
-
     workingSet[filename].taken = true;
 
     process.send({
