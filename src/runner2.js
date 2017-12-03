@@ -22,9 +22,7 @@ module.exports = function createRunner() {
 function run(cfg) {
     return new Promise((resolve, reject) => glob(cfg.pattern, (err, files) => runFiles(
         Object.assign({}, cfg, {files, resolve, reject})
-    ))).catch(err => {
-        console.log('failed', err);
-    });
+    )));
 }
 
 function runFiles({
@@ -132,8 +130,12 @@ function runFiles({
 
     function handleAllDone() {
         const duration = new Date() - startTime;
-        printSummary(workingSet, duration);
-        resolve();
+        const hasErrors = printSummary(workingSet, duration);
+
+        if (hasErrors)
+            reject();
+        else
+            resolve();
     }
 
     waitUntilJobsReady(processes)
@@ -270,4 +272,6 @@ function printSummary(workingSet, duration) {
     console.log(reset, 'tests:', summary.tests);
     console.log('suites:', summary.suites);
     console.log('running time:', duration / 1000, 'seconds');
+
+    return hasErrors;
 }

@@ -8,19 +8,19 @@ describe('runner2', () => {
     let logSpy;
 
     it('report failures', () => {
-        return run().then(() => {
+        return run().catch(() => {
             sinon.assert.calledWith(logSpy, red, 'failures:', 2);
         });
     });
 
     it('report passes', () => {
-        return run().then(() => {
+        return run().catch(() => {
             sinon.assert.calledWith(logSpy, green, 'passes:', 4);
         });
     });
 
     it('report pendings', () => {
-        return run().then(() => {
+        return run().catch(() => {
             sinon.assert.calledWith(logSpy, cyan, 'pending:', 1);
         });
     });
