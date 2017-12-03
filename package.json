@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha \"test/**/*.test.js\""
+    "test": "./node_modules/mocha/bin/mocha \"test/**/*.test.js\"",
+    "test:watchSingle": "./node_modules/mocha/bin/mocha --watch"
   },
   "author": "InterAl",
   "license": "ISC",

@@ -4,7 +4,7 @@ const createRunner = require('../src/runner2');
 
 const red = '\x1b[31m', green = '\x1b[32m', cyan = '\x1b[36m', reset = '\x1b[0m';
 
-describe('runner', () => {
+describe('runner2', () => {
     let logSpy;
 
     it('report failures', () => {
@@ -33,7 +33,7 @@ describe('runner', () => {
                 pattern: 'test/**/*.gg.js',
                 shuffleFiles: false,
                 slowTestPatterns: ['slowTest.gg.js'],
-                runner: 'mocha'
+                processName: path.resolve(__dirname, '../node_modules/mocha/bin/mocha')
             })
             .run();
     }

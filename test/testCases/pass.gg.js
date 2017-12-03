@@ -4,4 +4,7 @@ describe('foo bar', () => {
     it('pass2', () => {
         
     });
+    it.skip('pending', () => {
+    
+    });
 });
