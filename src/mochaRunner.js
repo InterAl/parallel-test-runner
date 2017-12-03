@@ -8,8 +8,11 @@ parentProcessApi.listenTo('runFile', runFile);
 
 parentProcessApi.onReady();
 
-function runFile({filename}) {
+function runFile({filename, messageTimestamp}) {
     try {
+        const start = new Date();
+        console.log('job run delay', start - new Date(messageTimestamp));
+
         const mocha = new Mocha();
 
         mocha.addFile(

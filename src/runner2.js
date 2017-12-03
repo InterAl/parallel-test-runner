@@ -186,7 +186,8 @@ function sendFileToJob(workingSet, process, filename) {
 
     process.send({
         type: 'runFile',
-        filename
+        filename,
+        messageTimestamp: new Date().toISOString()
     });
 }
 
