@@ -43,9 +43,9 @@ runner()
 Now you can simply execute ./parallelTestRunner.js to run your tests.
 
 ### Flaky tests
-Running the tests in parllel might cause some of them to fail randomly. This is probably because you
+Running the tests in parallel might cause some of them to fail randomly. This is probably because you
 have concurrency issues in your tests or production code. You can try including
-them in the slowTestPatterns, which will run them in a separate job.
+them in the slowTestPatterns, which will run them in a separate process.
 
 ### CLI support
 Might be added in the future.
