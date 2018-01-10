@@ -30,7 +30,7 @@ function runFile({filename, messageTimestamp}) {
         });
 
         runner.on('fail', (test, err) => {
-            parentProcessApi.onTestDone(filename, test.title, false, err);
+            parentProcessApi.onTestDone(filename, test.title, false, serializeError(err));
         });
 
         runner.on('pass', test => {
